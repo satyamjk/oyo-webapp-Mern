@@ -1,19 +1,35 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
 import './App.css';
 
-class App extends Component {
+import { Header } from './shared/Header';
+import RentalListing from './components/rental/rental-listing/RentalListing';
+import RentalDetail from './components/rental/rental-detail/RentalDetail';
+
+
+import { Provider } from 'react-redux';
+
+const store = require('./reducers/index.js').init();
+
+class App extends Component { 
   render() {
-    return (
+ 
+    
+
+
+    return(
+      <Provider store={store}>
+      <BrowserRouter>
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        <Header/>
+        <div className='container'>
+          <Route exact path = '/'  render = {() => <Redirect to = "/rentals"/>} />
+          <Route exact path = '/rentals' component = {RentalListing}/>
+          <Route exact path = '/rentals/:id' component = {RentalDetail}/>     
+        </div>
       </div>
+      </BrowserRouter>
+      </Provider>
     );
   }
 }
